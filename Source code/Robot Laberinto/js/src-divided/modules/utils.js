@@ -10,17 +10,37 @@ export function shuffle(a) {
     return a;
 }
 
-export function displayVictoryMess(playerNumber, moves) {
-    document.getElementById("winner").innerHTML = `¡Jugador ${playerNumber} ha ganado!`;
-    document.getElementById("moves").innerHTML = `Con ${moves} movimientos`;
+export function changeBrightness(factor, sprite) {
+    var virtCanvas = document.createElement("canvas");
+    virtCanvas.width = 500;
+    virtCanvas.height = 500;
+    var context = virtCanvas.getContext("2d");
+    context.drawImage(sprite, 0, 0, 500, 500);
+
+    var imgData = context.getImageData(0, 0, 500, 500);
+    
+    for (let i = 0; i < imgData.data.length; i += 4) {
+        imgData.data[i] = imgData.data[i] * factor;
+        imgData.data[i + 1] = imgData.data[i + 1] * factor;
+        imgData.data[i + 2] = imgData.data[i + 2] * factor;
+    }
+    context.putImageData(imgData, 0, 0);
+
+    var spriteOutput = new Image();
+    spriteOutput.src = virtCanvas.toDataURL();
+    virtCanvas.remove();
+    return spriteOutput;
+}
+
+export function displayVictoryMess(moves) {
+    document.getElementById("moves").innerHTML = "You Moved " + moves + " Steps.";
     toggleVisablity("Message-Container");
 }
 
 export function toggleVisablity(id) {
-    const element = document.getElementById(id);
-    if (element.style.visibility === "visible") {
-        element.style.visibility = "hidden";
+    if (document.getElementById(id).style.visibility == "visible") {
+        document.getElementById(id).style.visibility = "hidden";
     } else {
-        element.style.visibility = "visible";
+        document.getElementById(id).style.visibility = "visible";
     }
 }

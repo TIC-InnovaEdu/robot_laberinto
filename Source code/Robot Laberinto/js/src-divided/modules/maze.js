@@ -1,6 +1,17 @@
 import { rand } from './utils.js';
 
+/**
+ * Clase que representa un laberinto
+ */
 export class Maze {
+    // Constantes privadas estáticas
+    static #CORNER_POSITIONS = Object.freeze({
+        TOP_LEFT: { x: 0, y: 0 },
+        TOP_RIGHT: { x: 1, y: 0 },
+        BOTTOM_LEFT: { x: 0, y: 1 },
+        BOTTOM_RIGHT: { x: 1, y: 1 }
+    });
+
     static #DIRECTIONS = Object.freeze({
         NORTH: 'n',
         SOUTH: 's',
@@ -15,27 +26,35 @@ export class Maze {
         w: { y: 0, x: -1, opposite: 'e' }
     });
 
+    // Propiedades privadas
     #width;
     #height;
     #startCoord;
     #endCoord;
     #mazeMap;
     #directions;
-    #collectibles;
-    #numCollectibles;
 
-    constructor(width, height, numCollectibles = 3) {
+    /**
+     * Constructor del laberinto
+     * @param {number} width - Ancho del laberinto
+     * @param {number} height - Alto del laberinto
+     */
+    constructor(width, height) {
         this.#validateDimensions(width, height);
+        
         this.#width = width;
         this.#height = height;
         this.#directions = Object.values(Maze.#DIRECTIONS);
         this.#mazeMap = [];
-        this.#numCollectibles = numCollectibles;
-        this.#collectibles = new Set();
         
         this.#initializeMaze();
     }
 
+    /**
+     * Valida las dimensiones del laberinto
+     * @private
+     * @throws {Error} Si las dimensiones son inválidas
+     */
     #validateDimensions(width, height) {
         if (!Number.isInteger(width) || !Number.isInteger(height) ||
             width < 5 || height < 5) {
@@ -43,13 +62,20 @@ export class Maze {
         }
     }
 
+    /**
+     * Inicializa el laberinto
+     * @private
+     */
     #initializeMaze() {
         this.#generateMap();
         this.#setStartAndEndPositions();
         this.#createMaze();
-        this.#placeCollectibles();
     }
 
+    /**
+     * Genera la estructura inicial del mapa
+     * @private
+     */
     #generateMap() {
         this.#mazeMap = Array.from({ length: this.#height }, () =>
             Array.from({ length: this.#width }, () => ({
@@ -59,26 +85,29 @@ export class Maze {
         );
     }
 
+    /**
+     * Establece las posiciones de inicio y fin asegurando que no coincidan
+     * @private
+     */
     #setStartAndEndPositions() {
         const corners = this.#getCornerPositions();
         const availableCorners = [...corners];
-    
-        if (availableCorners.length < 2) {
-            console.error("Error: No hay suficientes esquinas para establecer inicio y fin.");
-            return;
-        }
-    
+        
+        // Seleccionar posición inicial aleatoria
         const startIndex = rand(availableCorners.length);
         this.#startCoord = availableCorners[startIndex];
         availableCorners.splice(startIndex, 1);
-    
+        
+        // Seleccionar posición final de las restantes
         const endIndex = rand(availableCorners.length);
         this.#endCoord = availableCorners[endIndex];
-    
-        console.log(`Inicio del laberinto en (${this.#startCoord.x}, ${this.#startCoord.y})`);
-        console.log(`Final del laberinto en (${this.#endCoord.x}, ${this.#endCoord.y})`);
     }
-    
+
+    /**
+     * Obtiene las posiciones de las esquinas ajustadas al tamaño del laberinto
+     * @private
+     * @returns {Array<{x: number, y: number}>}
+     */
     #getCornerPositions() {
         return [
             { x: 0, y: 0 },
@@ -88,6 +117,10 @@ export class Maze {
         ];
     }
 
+    /**
+     * Crea el laberinto usando el algoritmo de backtracking
+     * @private
+     */
     #createMaze() {
         const stack = [this.#startCoord];
         let cellsVisited = 1;
@@ -111,33 +144,12 @@ export class Maze {
         }
     }
 
-    #placeCollectibles() {
-        this.#collectibles.clear(); // Limpiar coleccionables previos
-        const positions = new Set();
-    
-        while (positions.size < this.#numCollectibles) {
-            const x = Math.floor(Math.random() * this.#width);
-            const y = Math.floor(Math.random() * this.#height);
-            const posKey = `${x},${y}`;
-    
-            // Validar que la celda tenga al menos un camino abierto
-            const cell = this.#mazeMap[x][y];
-            const hasOpenPath = cell.n || cell.s || cell.e || cell.w;
-    
-            if (hasOpenPath &&
-                (x !== this.#startCoord.x || y !== this.#startCoord.y) &&
-                (x !== this.#endCoord.x || y !== this.#endCoord.y)) {
-                positions.add(posKey);
-            }
-        }
-    
-        this.#collectibles = positions;
-        // 💡 Agregar un log para ver si las tuercas se están generando
-        console.log("✅ Tuercas generadas:", this.#collectibles);
-    }
-    
-    
-
+    /**
+     * Obtiene los vecinos no visitados de una celda
+     * @private
+     * @param {{x: number, y: number}} position
+     * @returns {Array<{coord: {x: number, y: number}, direction: string}>}
+     */
     #getUnvisitedNeighbors({ x, y }) {
         return this.#directions
             .map(dir => {
@@ -149,17 +161,32 @@ export class Maze {
             .filter(Boolean);
     }
 
+    /**
+     * Verifica si un movimiento es válido
+     * @private
+     * @param {number} x
+     * @param {number} y
+     * @returns {boolean}
+     */
     #isValidMove(x, y) {
         return x >= 0 && x < this.#width && 
                y >= 0 && y < this.#height && 
                !this.#mazeMap[x][y].visited;
     }
 
+    /**
+     * Conecta dos celdas del laberinto
+     * @private
+     * @param {{x: number, y: number}} current
+     * @param {{x: number, y: number}} next
+     * @param {string} direction
+     */
     #connectCells(current, next, direction) {
         this.#mazeMap[current.x][current.y][direction] = true;
         this.#mazeMap[next.x][next.y][Maze.#DIRECTION_MODIFIERS[direction].opposite] = true;
     }
 
+    // Getters públicos
     get map() {
         return this.#mazeMap;
     }
@@ -170,9 +197,5 @@ export class Maze {
 
     get endCoord() {
         return { ...this.#endCoord };
-    }
-
-    get collectibles() {
-        return this.#collectibles;
     }
 }
