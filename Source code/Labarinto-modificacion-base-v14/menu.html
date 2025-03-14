@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Game - Menú</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+    <div class="menu-container">
+        <div class="menu-box">
+            <h1 class="menu-title">Maze Game</h1>
+            <div class="menu-options">
+                <button class="menu-button single-player" onclick="startGame('single')">
+                    1.- Solo jugador
+                </button>
+                <button class="menu-button multiplayer" onclick="startGame('split')">
+                    2.- Pantalla dividida para 2 jugadores
+                </button>
+                <button class="menu-button logout" onclick="logout()">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="js/menu.js"></script>
+</body>
+</html>

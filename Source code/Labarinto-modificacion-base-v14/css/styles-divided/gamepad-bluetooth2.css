@@ -1,0 +1,130 @@
+/* Contenedor principal para el segundo mando */
+.gamepad2-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 2000;
+}
+
+/* Estilos para el ícono del gamepad 2 */
+.gamepad-icon2 {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.gamepad-icon2:hover {
+    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.gamepad-icon2 .icon {
+    font-size: 20px;
+    color: white;
+}
+
+.gamepad-icon2.connected {
+    background: rgba(76, 175, 80, 0.8);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.gamepad-icon2.disconnected {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Indicador de estado */
+.gamepad-icon2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: -2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff4444;
+    border: 2px solid white;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.gamepad-icon2.connected::after {
+    background: #4CAF50;
+    animation: pulse2 2s infinite;
+}
+
+/* Animación de pulso */
+@keyframes pulse2 {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Tooltip */
+.gamepad-tooltip2 {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.gamepad-icon2:hover .gamepad-tooltip2 {
+    opacity: 1;
+}
+
+/* Píldora de estado */
+.status-pill2 {
+    position: absolute;
+    left: 70px;
+    top: 0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.status-pill2.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.status-pill2.connected {
+    background: rgba(76, 175, 80, 0.9);
+    color: white;
+}
+
+.status-pill2.disconnected {
+    background: rgba(244, 67, 54, 0.9);
+    color: white;
+}
+
+.error-text2 {
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 4px;
+    font-style: italic;
+}

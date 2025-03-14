@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Game</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/mazeStyles.css">
+    <link rel="stylesheet" href="css/interactionStyles.css">
+    <link rel="stylesheet" href="css/questionStyles.css">
+    <link rel="stylesheet" href="css/gamepad-bluetooth.css">
+
+</head>
+<body>
+    <div id="page">
+        <!-- Verificación del modo de juego -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (!localStorage.getItem('isLoggedIn')) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const gameMode = localStorage.getItem('gameMode');
+                if (!gameMode) {
+                    window.location.href = 'menu.html';
+                    return;
+                }
+
+                // Configurar la interfaz según el modo de juego
+                if (gameMode === 'split') {
+                    setupSplitScreen();
+                }
+            });
+
+            function setupSplitScreen() {
+                console.log('Modo pantalla dividida activado');
+                window.location.href = 'game-divided.html'; // Redirigir a game-divided.html
+                // Esta función se implementará cuando desarrollemos 
+                // la funcionalidad de pantalla dividida
+                //console.log('Modo pantalla dividida activado');
+                // Por ahora solo muestra un mensaje
+                //alert('Modo de 2 jugadores seleccionado - En desarrollo');
+            }
+        </script>
+
+        <!-- Contenedor del mensaje -->
+        <div id="Message-Container">
+            <div id="message">
+                <h1>¡Felicitaciones!</h1>
+                <p>¡Lo lograste!</p>
+                <p id="moves"></p>
+                <input id="okBtn" type="button" onclick="toggleVisibility('Message-Container')" value="¡Genial!" />
+            </div>
+        </div>
+
+        <!-- Menú de selección -->
+        <div id="menu">
+            <div class="custom-select">
+                <select id="diffSelect">
+                    <option value="10">Fácil</option>
+                    <option value="15">Medio</option>
+                    <option value="25">Difícil</option>
+                </select>
+            </div>
+            <div class="custom-select">
+                <select id="questionSelect">
+                    <option value="3">3 Preguntas</option>
+                    <option value="5">5 Preguntas</option>
+                    <option value="7">7 Preguntas</option>
+                </select>
+            </div>
+            <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Comenzar" />
+            <input id="logoutBtn" type="button" onclick="logout()" value="Volver al Menú" />
+        </div>
+
+        <!-- Contenedor del laberinto -->
+        <div id="view">
+            <div id="mazeContainer">
+                <canvas id="mazeCanvas" class="border" width="800" height="800"></canvas>
+            </div>
+        </div>
+
+        <!-- Instrucciones -->
+        <p id="instructions">¡Usa las flechas del teclado para mover la llave hasta la casa! Recoge todas las tuercas respondiendo las preguntas.</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/mazeLogic.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/gamepad-serial.js"></script>
+    <!-- Script de verificación de login -->
+    <script>
+        function logout() {
+            window.location.href = 'menu.html';
+        }
+    </script>
+</body>
+</html>

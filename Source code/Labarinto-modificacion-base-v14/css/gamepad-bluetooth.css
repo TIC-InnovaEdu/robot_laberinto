@@ -1,0 +1,125 @@
+/* Estilos para el ícono del gamepad */
+.gamepad-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.gamepad-icon:hover {
+    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.gamepad-icon .icon {
+    font-size: 20px;
+    color: white;
+}
+
+.gamepad-icon.connected {
+    background: rgba(76, 175, 80, 0.8);
+}
+
+.gamepad-icon.disconnected {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Indicador de estado */
+.gamepad-icon::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff4444;
+    border: 2px solid white;
+    transition: background-color 0.3s ease;
+}
+
+.gamepad-icon.connected::after {
+    background: #4CAF50;
+}
+
+/* Animación de pulso para el estado conectado */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.gamepad-icon.connected::after {
+    animation: pulse 2s infinite;
+}
+
+/* Tooltip */
+.gamepad-tooltip {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.gamepad-icon:hover .gamepad-tooltip {
+    opacity: 1;
+}
+
+/* Estilos para la píldora de estado */
+.status-pill {
+    position: fixed;
+    top: 20px;
+    right: 70px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    z-index: 999;
+}
+
+.status-pill.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.status-pill.connected {
+    background: rgba(76, 175, 80, 0.9);
+    color: white;
+}
+
+.status-pill.disconnected {
+    background: rgba(244, 67, 54, 0.9);
+    color: white;
+}
+
+.error-text {
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 4px;
+    font-style: italic;
+}

@@ -1,0 +1,82 @@
+#view {
+    margin-top: 30px;
+    width: 100%;
+    height: calc(100vh - 150px); /* Ajuste para considerar el espacio del menú */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mazeContainer {
+    position: relative;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#mazeContainer #mazeCanvas {
+    margin: 0;
+    padding: 0;
+    display: block;
+    border: solid 2px black;
+    max-width: 95vmin; /* Usa el valor mínimo entre el ancho y alto de la ventana */
+    max-height: 95vmin;
+    width: auto;
+    height: auto;
+}
+
+#Message-Container {
+    visibility: hidden;
+    color: black;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.30);
+    z-index: 1;
+}
+
+#Message-Container #message {
+    width: 300px;
+    height: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#Message-Container #message h1 {
+    color: #333;
+    margin-top: 0;
+    font-size: 24px;
+}
+
+#Message-Container #message p {
+    color: #666;
+    margin: 10px 0;
+}
+
+#Message-Container #message #okBtn {
+    margin-top: 15px;
+    padding: 8px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#Message-Container #message #okBtn:hover {
+    background-color: #45a049;
+}
